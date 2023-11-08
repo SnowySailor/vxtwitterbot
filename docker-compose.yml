@@ -1,0 +1,15 @@
+version: '2.3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    restart: unless-stopped
+    volumes:
+      - .:/app
+
+volumes:
+  db-data:
+    driver: local
