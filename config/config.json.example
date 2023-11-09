@@ -1,3 +1,4 @@
 {
-    "token": "your bot token"
+    "token": "your bot token",
+    "log_to_file": true
 }

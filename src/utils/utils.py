@@ -2,16 +2,6 @@ import json
 import sys
 import datetime
 
-class LoggerWriter:
-    def __init__(self, level: str):
-        self.level = level
-
-    def write(self, message: str):
-        self.level(message)
-
-    def flush(self):
-        self.level(sys.stderr)
-
 def get_multi_level_value(d, *keys: any, **kwargs: any):
     default = get_value(kwargs, 'default')
 

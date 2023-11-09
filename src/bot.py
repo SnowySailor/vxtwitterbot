@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from src.utils.logger import init_logger, logtofile
+from src.utils.logger import init_logger, log
 from src.utils.utils import get_config
 import urlextract
 from urllib.parse import urlparse
@@ -30,8 +30,8 @@ class Bot(commands.Bot):
         super().__init__(*args, **kwargs)
 
     async def on_ready(self):
-        logtofile(f'Logged in as {bot.user} (ID: {bot.user.id})')
-        logtofile('------')
+        log(f'Logged in as {bot.user} (ID: {bot.user.id})')
+        log('------')
 
     async def on_message(self, message):
         urls = extract_and_parse_urls(message.content)
