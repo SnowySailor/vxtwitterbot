@@ -14,10 +14,15 @@ def extract_and_parse_urls(text):
 def get_urls_with_fixed_domain_names(urls):
     ret = []
     for url in urls:
+        if url.path == '':
+            pass
+
         if url.netloc in ['www.x.com', 'www.twitter.com', 'x.com', 'twitter.com']:
             ret.append(url._replace(netloc='vxtwitter.com'))
         elif url.netloc in ['www.instagram.com', 'instagram.com']:
             ret.append(url._replace(netloc='ddinstagram.com'))
+        elif url.netloc in ['pixiv.net', 'www.pixiv.net']:
+            ret.append(url._replace(netloc='phixiv.net'))
     return ret
 
 class Bot(commands.Bot):
