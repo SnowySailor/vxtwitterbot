@@ -23,6 +23,8 @@ def get_urls_with_fixed_domain_names(urls):
             ret.append(url._replace(netloc='ddinstagram.com'))
         elif url.netloc in ['pixiv.net', 'www.pixiv.net']:
             ret.append(url._replace(netloc='phixiv.net'))
+        elif url.netloc in ['reddit.com', 'www.reddit.com', 'old.reddit.com', 'www.old.reddit.com']:
+            ret.append(url._replace(netloc='rxddit.com'))
     return ret
 
 class Bot(commands.Bot):
