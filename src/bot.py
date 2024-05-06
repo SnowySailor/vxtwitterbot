@@ -25,6 +25,8 @@ def get_urls_with_fixed_domain_names(urls):
             ret.append(url._replace(netloc='phixiv.net'))
         elif url.netloc in ['reddit.com', 'www.reddit.com', 'old.reddit.com', 'www.old.reddit.com']:
             ret.append(url._replace(netloc='rxddit.com'))
+        elif url.netloc in ['www.tiktok.com', 'tiktok.com']:
+            ret.append(url._replace(netloc='tiktxk.com'))
     return ret
 
 class Bot(commands.Bot):
