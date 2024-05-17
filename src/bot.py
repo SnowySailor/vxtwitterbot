@@ -43,6 +43,7 @@ class Bot(commands.Bot):
         if len(urls) > 0:
             replacement_message = '\n'.join([url.geturl() for url in urls])
             await message.channel.send(replacement_message)
+            await message.edit(suppress=True)
 
 init_logger()
 
