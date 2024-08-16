@@ -3,13 +3,20 @@ from discord.ext import commands
 from src.utils.logger import init_logger, log
 from src.utils.utils import get_config
 import urlextract
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs, urlencode
+import time
 
 def extract_and_parse_urls(text):
     extractor = urlextract.URLExtract()
     urls = extractor.find_urls(text)
     parsed_urls = [urlparse(url) for url in urls]
     return parsed_urls
+
+def delete_query_params(url, params):
+    query = parse_qs(url.query, keep_blank_values=True)
+    for param in params:
+        query.pop(param, None)
+    return url._replace(query=urlencode(query, True))
 
 def get_urls_with_fixed_domain_names(urls):
     ret = []
@@ -18,15 +25,23 @@ def get_urls_with_fixed_domain_names(urls):
             pass
 
         if url.netloc in ['www.x.com', 'www.twitter.com', 'x.com', 'twitter.com']:
-            ret.append(url._replace(netloc='vxtwitter.com'))
+            url = url._replace(netloc='vxtwitter.com')
+            url = delete_query_params(url, ['t'])
+            ret.append(url)
         elif url.netloc in ['www.instagram.com', 'instagram.com']:
-            ret.append(url._replace(netloc='ddinstagram.com'))
+            url = url._replace(netloc='ddinstagram.com')
+            url = delete_query_params(url, ['igsh'])
+            ret.append(url)
         elif url.netloc in ['pixiv.net', 'www.pixiv.net']:
-            ret.append(url._replace(netloc='phixiv.net'))
+            url = url._replace(netloc='phixiv.net')
+            ret.append(url)
         elif url.netloc in ['reddit.com', 'www.reddit.com', 'old.reddit.com', 'www.old.reddit.com']:
-            ret.append(url._replace(netloc='rxddit.com'))
+            url = url._replace(netloc='rxddit.com')
+            url = delete_query_params(url, ['utm_source', 'utm_medium', 'utm_name', 'utm_content', 'utm_term'])
+            ret.append(url)
         elif url.netloc in ['www.tiktok.com', 'tiktok.com']:
-            ret.append(url._replace(netloc='tiktxk.com'))
+            url = url._replace(netloc='tnktok.com')
+            ret.append(url)
     return ret
 
 class Bot(commands.Bot):
@@ -43,6 +58,7 @@ class Bot(commands.Bot):
         if len(urls) > 0:
             replacement_message = '\n'.join([url.geturl() for url in urls])
             await message.channel.send(replacement_message)
+            time.sleep(0.5)
             await message.edit(suppress=True)
 
 init_logger()
